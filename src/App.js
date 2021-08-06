@@ -5,14 +5,18 @@ import {
   initialWindowMetrics,
 } from 'react-native-safe-area-context';
 import Navigator from './config/navigator';
+import {Provider} from 'react-redux';
+import reduxsStore from './config/redux/store';
 
 const App = () => {
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <Provider store={reduxsStore}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 };
 
