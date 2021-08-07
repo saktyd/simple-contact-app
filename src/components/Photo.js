@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import {boxShadowDefault, colors} from '../styles';
+import {Image, StyleSheet} from 'react-native';
+import {colors} from '../styles';
 
 const Photo = ({urlPhoto, imageStyle}) => {
-  const [sourceImg, setSourceImg] = useState('');
+  const [sourceImg, setSourceImg] = useState(require('../assets/account.png'));
   useEffect(() => {
     const url = urlPhoto ? urlPhoto.replace('http', 'https') : urlPhoto;
     if (url) {

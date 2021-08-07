@@ -17,7 +17,7 @@ const CardContact = ({item}) => {
   };
 
   const ripple = {
-    color: colors.purple,
+    color: colors.greyDark,
     borderless: false,
     radius: -5,
   };

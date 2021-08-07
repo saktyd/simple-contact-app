@@ -131,7 +131,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mycontact"
+        applicationId "com.sakti.mycontact"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
