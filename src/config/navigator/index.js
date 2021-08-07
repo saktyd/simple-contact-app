@@ -14,17 +14,18 @@ export default () => {
     headerBackVisible: true,
     headerTitleAlign: 'center',
     headerTintColor: colors.purple,
+    headerBackTitle: '',
     headerTitleStyle: {
       color: colors.purple,
-      fontSize: fontSizes.medium,
+      fontSize: fontSizes.large,
       fontWeight: 'bold',
     },
   };
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
-        presentation: 'transparentModal',
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        presentation: 'card',
       }}>
       <Stack.Screen
         name="My Contact"
