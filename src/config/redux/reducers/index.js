@@ -11,6 +11,9 @@ const initialState = {
   editedContact: null,
   isLoadingEdit: false,
   errorEdit: false,
+  deletedContact: null,
+  isLoadingDeleteContact: false,
+  errorDeleteContact: false,
 };
 
 const contactReducer = (state = initialState, action) => {
@@ -114,6 +117,31 @@ const contactReducer = (state = initialState, action) => {
           errorKeys,
           errorMessage,
         },
+      };
+    }
+
+    case 'DELETE_CONTACT_BEGIN': {
+      return {
+        ...state,
+        isLoadingDeleteContact: true,
+        errorDeleteContact: false,
+        deletedContact: null,
+      };
+    }
+
+    case 'DELETE_CONTACT_SUCCESS': {
+      return {
+        ...state,
+        isLoadingDeleteContact: false,
+        deletedContact: action.payload.data,
+      };
+    }
+
+    case 'DELETE_CONTACT_ERROR': {
+      return {
+        ...state,
+        isLoadingDeleteContact: false,
+        errorDeleteContact: action.payload.error,
       };
     }
 

@@ -1,13 +1,22 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Photo, ScreenContainer} from '../../components';
-import {fetchContactDetail} from '../../config/redux/actions';
+import {
+  Button,
+  Photo,
+  ScreenContainer,
+  ModalDeleteContact,
+} from '../../components';
+import {deleteContact, fetchContactDetail} from '../../config/redux/actions';
 import {boxShadowDefault, colors} from '../../styles';
 
 export default ({navigation}) => {
   const dispatch = useDispatch();
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const contactDetail = useSelector(({contact}) => contact.contactDetail);
+  const isLoadingDeleteContact = useSelector(
+    ({contact}) => contact.isLoadingDeleteContact,
+  );
 
   const onPessEdit = () => {
     navigation.push('UpdateContact', {
@@ -21,8 +30,22 @@ export default ({navigation}) => {
     };
   }, [dispatch]);
 
+  const modalAction = item => {
+    if (item === 'delete') {
+      dispatch(deleteContact(contactDetail.id));
+    }
+    setShowModalDelete(false);
+  };
+
   return (
-    <ScreenContainer bgColor={'white'} edges={['bottom']}>
+    <ScreenContainer
+      bgColor={'white'}
+      loading={isLoadingDeleteContact}
+      edges={['bottom']}>
+      <ModalDeleteContact
+        modalVisible={showModalDelete}
+        onPress={modalAction}
+      />
       <Photo urlPhoto={contactDetail?.photo} imageStyle={styles.imageStyle} />
       <View style={styles.nameContainer}>
         <Text style={styles.name} numberOfLines={1} ellipsizeMode={'tail'}>
@@ -43,7 +66,7 @@ export default ({navigation}) => {
             styleText={styles.createText}
           />
           <Button
-            // onPress={onPessCreate}
+            onPress={() => setShowModalDelete(true)}
             styleContainer={styles.deleteButton}
             title={'Delete'}
             styleText={styles.createText}

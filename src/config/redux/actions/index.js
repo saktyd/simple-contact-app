@@ -35,7 +35,7 @@ export const fetchContacts = () => {
       .then(res => {
         dispatch(fetchContactsSuccess(res.data?.data));
       })
-      .catch(async err => {
+      .catch(err => {
         dispatch(fetchContactsError(err.response?.data));
       });
   };
@@ -72,7 +72,7 @@ export const createContact = payload => {
         dispatch(fetchContacts());
         RootNavigation.goBack();
       })
-      .catch(async err => {
+      .catch(err => {
         dispatch(createContactError(err.response?.data));
       });
   };
@@ -126,8 +126,45 @@ export const editContact = (payload, id) => {
         dispatch(fetchContacts());
         RootNavigation.goBack();
       })
-      .catch(async err => {
+      .catch(err => {
         dispatch(editContactError(err.response?.data));
+      });
+  };
+};
+
+// Delete Contact Actions
+export const deleteContactBegin = () => ({
+  type: 'DELETE_CONTACT_BEGIN',
+});
+
+export const deleteContactSuccess = data => {
+  return {
+    type: 'DELETE_CONTACT_SUCCESS',
+    payload: {
+      data: data,
+    },
+  };
+};
+
+export const deleteContactError = error => ({
+  type: 'DELETE_CONTACT_ERROR',
+  payload: {
+    error: error,
+  },
+});
+
+export const deleteContact = id => {
+  return async dispatch => {
+    dispatch(deleteContactBegin());
+    await request
+      .delete(`contact/${id}`)
+      .then(res => {
+        dispatch(deleteContactSuccess(res.data));
+        dispatch(fetchContacts());
+        RootNavigation.goBack();
+      })
+      .catch(err => {
+        dispatch(deleteContactError(err.response?.data));
       });
   };
 };

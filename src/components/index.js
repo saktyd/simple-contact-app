@@ -4,5 +4,14 @@ import Button from './Button';
 import Input from './Input';
 import Photo from './Photo';
 import ScreenContainer from './ScreenContainer';
+import ModalDeleteContact from './ModalDeleteContact';
 
-export {LoadingContainer, CardContact, Button, Input, Photo, ScreenContainer};
+export {
+  LoadingContainer,
+  CardContact,
+  Button,
+  Input,
+  Photo,
+  ScreenContainer,
+  ModalDeleteContact,
+};
