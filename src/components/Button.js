@@ -6,7 +6,7 @@ import {
   Platform,
   Pressable,
 } from 'react-native';
-import {colors} from '../styles';
+import {boxShadowDefault, colors} from '../styles';
 
 const ButtonText = ({styleText, disabled, title}) => {
   return (
@@ -29,7 +29,7 @@ const ButtonChildren = ({children, ...props}) => {
 
 const Button = ({styleContainer, ripple, disabled, onPress, ...props}) => {
   const ButtonProps = {
-    style: [styles.container({disabled}), styleContainer],
+    style: [styles.container(disabled), styleContainer],
     onPress: !disabled ? onPress : null,
   };
   const android_ripple = {
@@ -51,7 +51,11 @@ const Button = ({styleContainer, ripple, disabled, onPress, ...props}) => {
 
 const styles = StyleSheet.create({
   container: disabled => ({
-    backgroundColor: disabled ? colors.greyNormal : '',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    ...boxShadowDefault,
+    borderRadius: 20,
+    backgroundColor: disabled ? colors.greyNormal : colors.pink,
   }),
   text: {
     fontWeight: 'bold',

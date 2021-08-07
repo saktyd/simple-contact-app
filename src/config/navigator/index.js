@@ -4,7 +4,7 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import {ContactDetail, ContactList, UpdateContact} from '../../screens';
-import {colors, fontSizes} from '../../styles';
+import {boxShadowDefault, colors, fontSizes} from '../../styles';
 
 const Stack = createStackNavigator();
 
@@ -13,10 +13,14 @@ export default () => {
     headerShown: true,
     headerBackVisible: true,
     headerTitleAlign: 'center',
-    headerTintColor: colors.purple,
+    headerTintColor: 'white',
+    headerStyle: {
+      ...boxShadowDefault,
+      backgroundColor: colors.purple,
+    },
     headerBackTitle: '',
     headerTitleStyle: {
-      color: colors.purple,
+      color: 'white',
       fontSize: fontSizes.large,
       fontWeight: 'bold',
     },

@@ -4,6 +4,9 @@ const initialState = {
   contacts: [],
   isLoadingGetContacts: false,
   errorGetContacts: false,
+  createdContact: null,
+  isLoadingCreate: false,
+  errorCreate: false,
 };
 
 const contactReducer = (state = initialState, action) => {
@@ -30,6 +33,41 @@ const contactReducer = (state = initialState, action) => {
         ...state,
         isLoadingGetContacts: false,
         errorGetContacts: action.payload.error,
+      };
+    }
+
+    case 'CREATE_CONTACT_BEGIN': {
+      return {
+        ...state,
+        isLoadingCreate: true,
+        errorCreate: false,
+        createdContact: null,
+      };
+    }
+
+    case 'CREATE_CONTACT_SUCCESS': {
+      return {
+        ...state,
+        isLoadingCreate: false,
+        createdContact: action.payload.data,
+      };
+    }
+
+    case 'CREATE_CONTACT_ERROR': {
+      const {message, validation} = action.payload.error;
+
+      const errorKeys = validation.keys[0];
+      const errorMessage = message
+        .split(`["${errorKeys}" `)[1]
+        .replace(']', '');
+
+      return {
+        ...state,
+        isLoadingCreate: false,
+        errorCreate: {
+          errorKeys,
+          errorMessage,
+        },
       };
     }
 

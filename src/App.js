@@ -7,12 +7,13 @@ import {
 import Navigator from './config/navigator';
 import {Provider} from 'react-redux';
 import reduxsStore from './config/redux/store';
+import {navigationRef} from './config/navigator/rootNavigator';
 
 const App = () => {
   return (
     <Provider store={reduxsStore}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Navigator />
         </NavigationContainer>
       </SafeAreaProvider>

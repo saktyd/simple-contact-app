@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as RootNavigation from '../../navigator/rootNavigator';
 
 const request = axios.create({
   baseURL: 'https://simple-contact-crud.herokuapp.com',
@@ -40,4 +41,39 @@ export const fetchContacts = () => {
   };
 };
 
-// Fetch Contacts Actions
+// Create New Contact Actions
+export const createContactBegin = () => ({
+  type: 'CREATE_CONTACT_BEGIN',
+});
+
+export const createContactSuccess = data => {
+  return {
+    type: 'CREATE_CONTACT_SUCCESS',
+    payload: {
+      data: data,
+    },
+  };
+};
+
+export const createContactError = error => ({
+  type: 'CREATE_CONTACT_ERROR',
+  payload: {
+    error: error,
+  },
+});
+
+export const createContact = payload => {
+  return async dispatch => {
+    dispatch(createContactBegin());
+    await request
+      .post('contact', payload)
+      .then(res => {
+        dispatch(createContactSuccess(res.data));
+        dispatch(fetchContacts());
+        RootNavigation.goBack();
+      })
+      .catch(async err => {
+        dispatch(createContactError(err.response?.data));
+      });
+  };
+};

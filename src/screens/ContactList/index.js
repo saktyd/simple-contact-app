@@ -2,9 +2,14 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchContacts} from '../../config/redux/actions';
-import {LoadingContainer, CardContact, Button} from '../../components';
+import {
+  LoadingContainer,
+  CardContact,
+  Button,
+  ScreenContainer,
+} from '../../components';
 import {boxShadowDefault, colors} from '../../styles';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default ({navigation}) => {
   const dispatch = useDispatch();
@@ -23,7 +28,7 @@ export default ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <ScreenContainer bgColor={colors.background} edges={['bottom']}>
       {isLoading ? (
         <LoadingContainer />
       ) : (
@@ -48,15 +53,11 @@ export default ({navigation}) => {
         title={'Create new contact'}
         styleText={styles.createText}
       />
-    </SafeAreaView>
+    </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   flatlistContainer: {
     flexGrow: 1,
     padding: 20,

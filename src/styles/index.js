@@ -5,9 +5,11 @@ const colors = {
   greyDark: '#585A89',
   background: '#F2F2F3',
   pink: '#FA6484',
+  red: '#F52E31',
 };
 
 const fontSizes = {
+  xsmall: 12,
   small: 14,
   medium: 16,
   large: 18,
