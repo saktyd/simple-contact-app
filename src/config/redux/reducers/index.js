@@ -7,6 +7,10 @@ const initialState = {
   createdContact: null,
   isLoadingCreate: false,
   errorCreate: false,
+  contactDetail: null,
+  editedContact: null,
+  isLoadingEdit: false,
+  errorEdit: false,
 };
 
 const contactReducer = (state = initialState, action) => {
@@ -65,6 +69,48 @@ const contactReducer = (state = initialState, action) => {
         ...state,
         isLoadingCreate: false,
         errorCreate: {
+          errorKeys,
+          errorMessage,
+        },
+      };
+    }
+
+    case 'FETCH_CONTACT_DETAIL_SUCCESS': {
+      return {
+        ...state,
+        contactDetail: action.payload.data,
+      };
+    }
+
+    case 'EDIT_CONTACT_BEGIN': {
+      return {
+        ...state,
+        isLoadingEdit: true,
+        errorEdit: false,
+        editedContact: null,
+      };
+    }
+
+    case 'EDIT_CONTACT_SUCCESS': {
+      return {
+        ...state,
+        isLoadingEdit: false,
+        editedContact: action.payload.data,
+      };
+    }
+
+    case 'EDIT_CONTACT_ERROR': {
+      const {message, validation} = action.payload.error;
+
+      const errorKeys = validation.keys[0];
+      const errorMessage = message
+        .split(`["${errorKeys}" `)[1]
+        .replace(']', '');
+
+      return {
+        ...state,
+        isLoadingEdit: false,
+        errorEdit: {
           errorKeys,
           errorMessage,
         },

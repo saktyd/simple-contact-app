@@ -4,11 +4,15 @@ import {boxShadowDefault, colors, fontSizes} from '../styles';
 import {useNavigation} from '@react-navigation/native';
 import Button from './Button';
 import Photo from './Photo';
+import {fetchContactDetail} from '../config/redux/actions';
+import {useDispatch} from 'react-redux';
 
 const CardContact = ({item}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const onPress = () => {
+    dispatch(fetchContactDetail(item));
     navigation.navigate('Contact Detail');
   };
 

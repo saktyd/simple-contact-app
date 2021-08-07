@@ -1,16 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useMemo, useCallback, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import {Button, Input, Photo, ScreenContainer} from '../../components';
 import {debounce} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
-import {createContact} from '../../config/redux/actions';
-import {colors} from '../../styles';
+import {createContact, editContact} from '../../config/redux/actions';
 
-export default () => {
+export default ({route}) => {
+  const {type} = route.params;
   const dispatch = useDispatch();
   const errorCreate = useSelector(({contact}) => contact.errorCreate);
   const isLoadingCreate = useSelector(({contact}) => contact.isLoadingCreate);
+  const contactDetail = useSelector(({contact}) => contact.contactDetail);
+  const errorEdit = useSelector(({contact}) => contact.errorEdit);
+  const isLoadingEdit = useSelector(({contact}) => contact.isLoadingEdit);
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -91,8 +95,13 @@ export default () => {
   };
 
   const onPress = () => {
-    const payload = {...form, age: parseInt(form.age)};
-    dispatch(createContact(payload));
+    if (type === 'create') {
+      const payload = {...form, age: parseInt(form.age)};
+      dispatch(createContact(payload));
+    } else {
+      const payload = {...form, age: parseInt(form.age)};
+      dispatch(editContact(payload, contactDetail?.id));
+    }
   };
 
   const debouceInputChange = useCallback(debounce(onInputChange, 800), [
@@ -100,18 +109,32 @@ export default () => {
   ]);
 
   useEffect(() => {
-    if (errorCreate) {
-      const {errorKeys, errorMessage} = errorCreate;
+    if (errorCreate || errorEdit) {
+      const {errorKeys, errorMessage} =
+        type === 'create' ? errorCreate : errorEdit;
       setErrors({...errors, [errorKeys]: errorMessage});
     }
-  }, [errorCreate]);
+  }, [errorCreate, errorEdit]);
+
+  useEffect(() => {
+    if (type === 'edit' && contactDetail) {
+      const {age, id, ...rest} = contactDetail;
+      setForm({
+        ...form,
+        ...rest,
+        age: age.toString(),
+      });
+    }
+  }, [contactDetail]);
 
   return (
     <ScreenContainer
-      loading={isLoadingCreate}
-      bgColor={colors.background}
+      loading={isLoadingCreate || isLoadingEdit}
+      bgColor={'white'}
       edges={['bottom']}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.photoContainer}>
           <Photo urlPhoto={form.photo} />
           <View style={{flex: 1, marginLeft: 10}}>
@@ -160,10 +183,10 @@ export default () => {
           {...{onPress}}
           disabled={isNotValid}
           styleContainer={styles.createButton}
-          title={'Create'}
+          title={type === 'create' ? 'Create' : 'Update'}
           styleText={styles.createText}
         />
-      </View>
+      </KeyboardAvoidingView>
     </ScreenContainer>
   );
 };
@@ -172,7 +195,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    backgroundColor: 'white',
   },
   photoContainer: {
     flexDirection: 'row',
@@ -180,7 +202,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   createButton: {
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 1,
+    width: '100%',
     paddingVertical: 10,
     paddingHorizontal: 15,
+    marginHorizontal: 30,
+    marginBottom: 30,
   },
 });

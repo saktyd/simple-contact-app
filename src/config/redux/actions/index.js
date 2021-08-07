@@ -77,3 +77,57 @@ export const createContact = payload => {
       });
   };
 };
+
+// Fetch Contacts Detail Actions
+export const fetchContactDetailSuccess = data => {
+  return {
+    type: 'FETCH_CONTACT_DETAIL_SUCCESS',
+    payload: {
+      data: data,
+    },
+  };
+};
+
+export const fetchContactDetail = value => {
+  return dispatch => {
+    dispatch(fetchContactDetailSuccess(value));
+  };
+};
+
+// Edit Contact Actions
+export const editContactBegin = () => ({
+  type: 'EDIT_CONTACT_BEGIN',
+});
+
+export const editContactSuccess = data => {
+  return {
+    type: 'EDIT_CONTACT_SUCCESS',
+    payload: {
+      data: data,
+    },
+  };
+};
+
+export const editContactError = error => ({
+  type: 'EDIT_CONTACT_ERROR',
+  payload: {
+    error: error,
+  },
+});
+
+export const editContact = (payload, id) => {
+  return async dispatch => {
+    dispatch(editContactBegin());
+    await request
+      .put(`contact/${id}`, payload)
+      .then(res => {
+        dispatch(editContactSuccess(res.data));
+        dispatch(fetchContactDetail(res.data.data));
+        dispatch(fetchContacts());
+        RootNavigation.goBack();
+      })
+      .catch(async err => {
+        dispatch(editContactError(err.response?.data));
+      });
+  };
+};

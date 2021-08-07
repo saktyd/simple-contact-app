@@ -51,7 +51,6 @@ export default ({navigation}) => {
         onPress={onPessCreate}
         styleContainer={styles.createButton(insets.bottom)}
         title={'Create new contact'}
-        styleText={styles.createText}
       />
     </ScreenContainer>
   );
@@ -73,8 +72,4 @@ const styles = StyleSheet.create({
     right: 20,
     backgroundColor: colors.pink,
   }),
-  createText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
 });
