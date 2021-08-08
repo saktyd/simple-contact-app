@@ -7,6 +7,7 @@ import {
   CardContact,
   Button,
   ScreenContainer,
+  NoData,
 } from '../../components';
 import {boxShadowDefault, colors} from '../../styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -35,7 +36,8 @@ export default ({navigation}) => {
         <FlatList
           data={contacts}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.flatlistContainer}
+          contentContainerStyle={styles.flatlistContainer(contacts.length)}
+          ListEmptyComponent={<NoData />}
           renderItem={({item}) => <CardContact {...{item}} />}
           refreshControl={
             <RefreshControl
@@ -57,11 +59,11 @@ export default ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  flatlistContainer: {
+  flatlistContainer: length => ({
     flexGrow: 1,
-    padding: 20,
+    padding: length > 1 ? 20 : 0,
     backgroundColor: colors.background,
-  },
+  }),
   createButton: insetsBottom => ({
     paddingVertical: 10,
     paddingHorizontal: 15,

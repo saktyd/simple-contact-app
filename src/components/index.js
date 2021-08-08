@@ -5,6 +5,7 @@ import Input from './Input';
 import Photo from './Photo';
 import ScreenContainer from './ScreenContainer';
 import ModalDeleteContact from './ModalDeleteContact';
+import NoData from './NoData';
 
 export {
   LoadingContainer,
@@ -14,4 +15,5 @@ export {
   Photo,
   ScreenContainer,
   ModalDeleteContact,
+  NoData,
 };
