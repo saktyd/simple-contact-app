@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {catchError} from '../../../utils';
 import * as RootNavigation from '../../navigator/rootNavigator';
 
 const request = axios.create({
@@ -36,6 +37,7 @@ export const fetchContacts = () => {
         dispatch(fetchContactsSuccess(res.data?.data));
       })
       .catch(err => {
+        catchError(err.response);
         dispatch(fetchContactsError(err.response?.data));
       });
   };
@@ -73,6 +75,7 @@ export const createContact = payload => {
         RootNavigation.goBack();
       })
       .catch(err => {
+        catchError(err.response);
         dispatch(createContactError(err.response?.data));
       });
   };
@@ -127,6 +130,7 @@ export const editContact = (payload, id) => {
         RootNavigation.goBack();
       })
       .catch(err => {
+        catchError(err.response);
         dispatch(editContactError(err.response?.data));
       });
   };
@@ -164,6 +168,7 @@ export const deleteContact = id => {
         RootNavigation.goBack();
       })
       .catch(err => {
+        catchError(err.response);
         dispatch(deleteContactError(err.response?.data));
       });
   };
