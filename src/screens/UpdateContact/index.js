@@ -4,7 +4,12 @@ import {View, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import {Button, Input, Photo, ScreenContainer} from '../../components';
 import {debounce} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
-import {createContact, editContact} from '../../config/redux/actions';
+import {
+  createContact,
+  createContactError,
+  editContact,
+  editContactError,
+} from '../../config/redux/actions';
 
 export default ({route}) => {
   const {type} = route.params;
@@ -115,6 +120,13 @@ export default ({route}) => {
       setErrors({...errors, [errorKeys]: errorMessage});
     }
   }, [errorCreate, errorEdit]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(editContactError(false));
+      dispatch(createContactError(false));
+    };
+  }, []);
 
   useEffect(() => {
     if (type === 'edit' && contactDetail) {

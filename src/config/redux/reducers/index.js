@@ -61,20 +61,26 @@ const contactReducer = (state = initialState, action) => {
     }
 
     case 'CREATE_CONTACT_ERROR': {
-      const {message, validation} = action.payload.error;
+      let errorCreate = false;
+      const payload = action.payload.error;
+      if (payload?.message && payload?.validation) {
+        const {message, validation} = payload;
 
-      const errorKeys = validation.keys[0];
-      const errorMessage = message
-        .split(`["${errorKeys}" `)[1]
-        .replace(']', '');
+        const errorKeys = validation.keys[0];
+        const errorMessage = message
+          .split(`["${errorKeys}" `)[1]
+          .replace(']', '');
+
+        errorCreate = {
+          errorKeys,
+          errorMessage,
+        };
+      }
 
       return {
         ...state,
         isLoadingCreate: false,
-        errorCreate: {
-          errorKeys,
-          errorMessage,
-        },
+        errorCreate: errorCreate,
       };
     }
 
@@ -103,20 +109,26 @@ const contactReducer = (state = initialState, action) => {
     }
 
     case 'EDIT_CONTACT_ERROR': {
-      const {message, validation} = action.payload.error;
+      let errorEdit = false;
+      const payload = action.payload.error;
+      if (payload?.message && payload?.validation) {
+        const {message, validation} = payload;
 
-      const errorKeys = validation.keys[0];
-      const errorMessage = message
-        .split(`["${errorKeys}" `)[1]
-        .replace(']', '');
+        const errorKeys = validation.keys[0];
+        const errorMessage = message
+          .split(`["${errorKeys}" `)[1]
+          .replace(']', '');
+
+        errorEdit = {
+          errorKeys,
+          errorMessage,
+        };
+      }
 
       return {
         ...state,
         isLoadingEdit: false,
-        errorEdit: {
-          errorKeys,
-          errorMessage,
-        },
+        errorEdit: errorEdit,
       };
     }
 
